@@ -3,14 +3,17 @@ package util;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-public class DrowUtil {
+public class DrawUtil {
 
 	public static final int BLACK = Color.black.getRGB();
 	public static final int BLUE = Color.blue.getRGB();
 
 	public static void DrowLine(int x1, int y1, int x2, int y2,
 			BufferedImage image) {
-
+		x1 = toScreenX(x1);
+		x2 = toScreenX(x2);
+		y1 = toScreenY(y1);
+		y2 = toScreenY(y2);
 		int length = (Math.abs(x2 - x1) >= Math.abs(y2 - y1)) ? Math.abs(x2
 				- x1) : Math.abs(y2 - y1);
 		float dx = (float) (x2 - x1) / length, dy = (float) (y2 - y1) / length;
@@ -26,7 +29,8 @@ public class DrowUtil {
 		}
 	}
 
-	public static void Brez(int x1, int y1, int x2, int y2, BufferedImage image) {
+	public static void Brez(int x1, int y1, int x2, int y2,
+			BufferedImage image, Color color) {
 		int temp = 0;
 		Boolean change = false;
 		int x = x1, y = y1;
@@ -37,27 +41,36 @@ public class DrowUtil {
 			dx = dy;
 			dy = temp;
 			change = true;
-		} else
+		} else {
 			change = false;
-		double e = 2 * dy - dx;
-		for (int i = 1; i <= dx; i++) {
-			image.setRGB(x, y, BLUE);
-			System.out.println(e+" ");
-			while (e >= 0) {
-				if (change)
-					x += s1;
-				else
-					y += s2;
-				e = e - 2 * dx;
-			}
-			if (change)
-				y += s2;
-			else
-				x += s1;
-			e = e + 2 * dy;
 		}
-		
+		int e = 2 * dy - dx;
+		for (int i = 1; i < dx; i++) {
+			image.setRGB(toScreenX(x), toScreenY(y), color.getRGB());
+			System.out.println(e + " ");
+			while (e >= 0) {
+				if (change) {
+					x += s1;
+				} else {
+					y += s2;
+				}
+				e -= 2 * dx;
+			}
+			if (change) {
+				y += s2;
+			} else {
+				x += s1;
+			}
+			e +=  2 * dy;
+		}
+	}
 
+	public static int toScreenX(int x) {
+		return x + 250;
+	}
+
+	public static int toScreenY(int y) {
+		return 250 - y;
 	}
 
 	private static int sign(float x) {
