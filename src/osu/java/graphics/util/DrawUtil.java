@@ -62,9 +62,18 @@ public class DrawUtil {
   public static int toScreenY(int y) {
     return 250 - y;
   }
+  
+  public static int toCartesianX(int x) {
+    return x + 250;
+  }
 
+  public static int toCartesianY(int y) {
+    return 250 - y;
+  }
+  
   private static int sign(float x) {
     return (x < 0 ? -1 : (x > 0 ? 1 : 0));
   }
 
 }
+

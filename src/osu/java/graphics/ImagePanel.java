@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Deque;
+import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -19,8 +21,10 @@ import osu.java.graphics.util.Line;
 public class ImagePanel extends JPanel implements MouseListener, MouseMotionListener {
 
   private CartesianImage canvas;
-  Point p = null;
-  Line tempLine = null;
+
+  private Deque<CartesianImage> lastImages = new LinkedList<CartesianImage>();
+  private Point p = null;
+  private Line tempLine = null;
 
   public ImagePanel() {
     canvas =
@@ -83,15 +87,13 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
   public void mouseClicked(MouseEvent e) {
     e.translatePoint(-250, -250 - 2 * (e.getY() - 250));
     if (p == null) {
+      lastImages.add(canvas.copy());
       p = e.getPoint();
     } else {
-      if (tempLine != null) {
-        DrawUtil.Brez(tempLine.getP1().x, tempLine.getP1().y, tempLine.getP2().x,
-            tempLine.getP2().y, canvas, Color.WHITE);
-        tempLine = null;
-      }
-      DrawUtil.Brez(p.x, p.y, e.getX(), e.getY(), canvas, Color.GREEN);
+      paintCanvas(lastImages.peek());
+      DrawUtil.Brez(p.x, p.y, e.getX(), e.getY(), canvas, Color.BLUE);
       p = null;
+      lastImages.poll();
     }
 
   }
@@ -130,13 +132,21 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
   public void mouseMoved(MouseEvent e) {
     e.translatePoint(-250, -250 - 2 * (e.getY() - 250));
     if (p != null) {
-      if (tempLine != null) {
-        DrawUtil.Brez(tempLine.getP1().x, tempLine.getP1().y, tempLine.getP2().x,
-            tempLine.getP2().y, canvas, Color.WHITE);
+      if (lastImages.size() > 0) {
+        paintCanvas(lastImages.peek());
       }
-      DrawUtil.Brez(p.x, p.y, e.getX(), e.getY(), canvas, Color.LIGHT_GRAY);
-      tempLine = new Line(p, e.getPoint());
+      DrawUtil.Brez(p.x, p.y, e.getX(), e.getY(), canvas, Color.RED);
+
     }
+  }
+
+  private void paintCanvas(CartesianImage newCanvas) {
+    for (int i = -250; i < 250; i++) {
+      for (int j = -250; j < 250; j++) {
+        canvas.setRGB(i, j, newCanvas.getRGB(i, j));
+      }
+    }
+
   }
 
 }

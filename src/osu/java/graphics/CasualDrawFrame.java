@@ -67,10 +67,7 @@ public class CasualDrawFrame extends JFrame {
   }
 
   private void drow(ImagePanel ip) {
-    DrawUtil.DrowLine(10, -200, 30, 190, ip.getCanvas());
-    DrawUtil.DrowLine(-10, 0, -250, -120, ip.getCanvas());
-    DrawUtil.Brez(0, 0, -240, -120, ip.getCanvas(), Color.RED);
-    DrawUtil.Brez(30, -200, 50, 190, ip.getCanvas(), Color.RED);
+    
   }
 
   public void actionPerformed(ActionEvent e) {
