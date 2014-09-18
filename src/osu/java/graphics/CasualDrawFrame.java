@@ -25,7 +25,7 @@ public class CasualDrawFrame extends JFrame {
   private void initUI() {
     JPanel mainVerticalPanel = new JPanel();
     mainVerticalPanel.setLayout(new BoxLayout(mainVerticalPanel, BoxLayout.Y_AXIS));
-    mainVerticalPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 20, 30));
+    mainVerticalPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 5, 30));
     add(mainVerticalPanel);
 
     JPanel mainPanel = new JPanel();
