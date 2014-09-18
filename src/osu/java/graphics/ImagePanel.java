@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import osu.java.graphics.algorithms.DigitalDifferentialAnalyzer;
 import osu.java.graphics.algorithms.DrawingAlgoStrategy;
+import osu.java.graphics.customUI.StatusBar;
 
 @SuppressWarnings("serial")
 public class ImagePanel extends JPanel implements MouseListener, MouseMotionListener {
@@ -23,17 +24,22 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
   private Deque<CartesianImage> lastImages = new LinkedList<CartesianImage>();
   private Point p = null;
   private DrawingAlgoStrategy drawingAlgo;
-
+  private StatusBar statusBar;
+  
   public ImagePanel() {
     canvas =
-        new CartesianImage(Integer.valueOf(501), Integer.valueOf(501), CartesianImage.TYPE_INT_ARGB);
+        new CartesianImage(501, 501, CartesianImage.TYPE_INT_ARGB);
     setDrawingAlgo(new DigitalDifferentialAnalyzer());
-    fillCanvas(Color.WHITE);
-    drawCartesianCoordinateSystem();
+    clearCanvas();
     addMouseListener(this);
     addMouseMotionListener(this);
   }
 
+  public void clearCanvas(){
+    fillCanvas(Color.WHITE);
+    drawCartesianCoordinateSystem();
+  }
+  
   private void drawCartesianCoordinateSystem() {
     for (int x = -220; x <= 220; x++) {
       canvas.setRGB(x, 0, Color.BLACK.getRGB());
@@ -62,10 +68,10 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    setSize(500, 500);
-    setBorder(BorderFactory.createLineBorder(Color.BLACK));
     Graphics2D g2d = (Graphics2D) g;
     g2d.drawImage(canvas, null, null);
+    setSize(501, 501);
+    setBorder(BorderFactory.createLineBorder(Color.BLACK));
   }
 
   /**
@@ -88,6 +94,8 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
     if (p == null) {
       lastImages.add(canvas.copy());
       p = e.getPoint();
+      getStatusBar().setText("First point: ("+e.getX()+" ,"+e.getY()+")");
+      
     } else {
       paintCanvas(lastImages.peek());
       getDrawingAlgo().drawObject(p, e.getPoint(), canvas, Color.BLUE);
@@ -134,6 +142,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         paintCanvas(lastImages.peek());
       }
       getDrawingAlgo().drawObject(p, e.getPoint(), canvas, Color.RED);
+      getStatusBar().setText("First point: ("+p.x+" ,"+p.y+");"+" Second point: ("+e.getX()+" ,"+e.getY()+");");
     }
   }
 
@@ -157,6 +166,20 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
    */
   public void setDrawingAlgo(DrawingAlgoStrategy drawingAlgo) {
     this.drawingAlgo = drawingAlgo;
+  }
+
+  /**
+   * @return the statusBar
+   */
+  public StatusBar getStatusBar() {
+    return statusBar;
+  }
+
+  /**
+   * @param statusBar the statusBar to set
+   */
+  public void setStatusBar(StatusBar statusBar) {
+    this.statusBar = statusBar;
   }
 
 }
