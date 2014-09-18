@@ -1,7 +1,8 @@
 package util;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
+
+import osu.java.graphics.CartesianImage;
 
 public class DrawUtil {
 
@@ -9,11 +10,7 @@ public class DrawUtil {
 	public static final int BLUE = Color.blue.getRGB();
 
 	public static void DrowLine(int x1, int y1, int x2, int y2,
-			BufferedImage image) {
-		x1 = toScreenX(x1);
-		x2 = toScreenX(x2);
-		y1 = toScreenY(y1);
-		y2 = toScreenY(y2);
+			CartesianImage image) {
 		int length = (Math.abs(x2 - x1) >= Math.abs(y2 - y1)) ? Math.abs(x2
 				- x1) : Math.abs(y2 - y1);
 		float dx = (float) (x2 - x1) / length, dy = (float) (y2 - y1) / length;
@@ -21,16 +18,14 @@ public class DrawUtil {
 		float y = (float) (y1 + 0.5 * sign(dy));
 		int i = 0;
 		while (++i <= length) {
-			System.out.println(Math.round(x) + " " + Math.round(y));
 			image.setRGB(Math.round(x), Math.round(y), BLACK);
-			System.out.println(Math.round(x) + " " + Math.round(y));
 			x += dx;
 			y += dy;
 		}
 	}
 
 	public static void Brez(int x1, int y1, int x2, int y2,
-			BufferedImage image, Color color) {
+			CartesianImage image, Color color) {
 		int temp = 0;
 		Boolean change = false;
 		int x = x1, y = y1;
@@ -46,8 +41,7 @@ public class DrawUtil {
 		}
 		int e = 2 * dy - dx;
 		for (int i = 1; i < dx; i++) {
-			image.setRGB(toScreenX(x), toScreenY(y), color.getRGB());
-			System.out.println(e + " ");
+			image.setRGB(x, y, color.getRGB());
 			while (e >= 0) {
 				if (change) {
 					x += s1;
