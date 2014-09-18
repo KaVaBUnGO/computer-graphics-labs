@@ -25,14 +25,14 @@ public class CasualDrawFrame extends JFrame {
   private void initUI() {
     JPanel mainVerticalPanel = new JPanel();
     mainVerticalPanel.setLayout(new BoxLayout(mainVerticalPanel, BoxLayout.Y_AXIS));
-    mainVerticalPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+    mainVerticalPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 20, 30));
     add(mainVerticalPanel);
 
     JPanel mainPanel = new JPanel();
     mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
     // mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     mainVerticalPanel.add(mainPanel);
-    mainVerticalPanel.setBorder(BorderFactory.createEmptyBorder());
+    //mainVerticalPanel.setBorder(BorderFactory.createEmptyBorder());
     JRadioButton ddaButton = new JRadioButton("DDA-line");
     ddaButton.setActionCommand("DDA");
     ddaButton.setSelected(true);
