@@ -13,22 +13,21 @@ import java.util.LinkedList;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import osu.java.graphics.util.DrawUtil;
-import osu.java.graphics.util.Line;
-
+import osu.java.graphics.algorithms.DigitalDifferentialAnalyzer;
+import osu.java.graphics.algorithms.DrawingAlgoStrategy;
 
 @SuppressWarnings("serial")
 public class ImagePanel extends JPanel implements MouseListener, MouseMotionListener {
 
   private CartesianImage canvas;
-
   private Deque<CartesianImage> lastImages = new LinkedList<CartesianImage>();
   private Point p = null;
-  private Line tempLine = null;
+  private DrawingAlgoStrategy drawingAlgo;
 
   public ImagePanel() {
     canvas =
         new CartesianImage(Integer.valueOf(501), Integer.valueOf(501), CartesianImage.TYPE_INT_ARGB);
+    setDrawingAlgo(new DigitalDifferentialAnalyzer());
     fillCanvas(Color.WHITE);
     drawCartesianCoordinateSystem();
     addMouseListener(this);
@@ -42,10 +41,10 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
     for (int y = -220; y <= 220; y++) {
       canvas.setRGB(0, y, Color.BLACK.getRGB());
     }
-    DrawUtil.Brez(220, 0, 200, 10, canvas, Color.BLACK);
-    DrawUtil.Brez(220, 0, 200, -10, canvas, Color.BLACK);
-    DrawUtil.Brez(0, 220, 10, 200, canvas, Color.BLACK);
-    DrawUtil.Brez(0, 220, -10, 200, canvas, Color.BLACK);
+    getDrawingAlgo().drawObject(new Point(220, 0), new Point(200, 10), canvas, Color.BLACK);
+    getDrawingAlgo().drawObject(new Point(220, 0), new Point(200, -10), canvas, Color.BLACK);
+    getDrawingAlgo().drawObject(new Point(0, 220), new Point(10, 200), canvas, Color.BLACK);
+    getDrawingAlgo().drawObject(new Point(0, 220), new Point(-10, 200), canvas, Color.BLACK);
     repaint();
   }
 
@@ -91,11 +90,10 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
       p = e.getPoint();
     } else {
       paintCanvas(lastImages.peek());
-      DrawUtil.Brez(p.x, p.y, e.getX(), e.getY(), canvas, Color.BLUE);
+      getDrawingAlgo().drawObject(p, e.getPoint(), canvas, Color.BLUE);
       p = null;
       lastImages.poll();
     }
-
   }
 
 
@@ -135,8 +133,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
       if (lastImages.size() > 0) {
         paintCanvas(lastImages.peek());
       }
-      DrawUtil.Brez(p.x, p.y, e.getX(), e.getY(), canvas, Color.RED);
-
+      getDrawingAlgo().drawObject(p, e.getPoint(), canvas, Color.RED);
     }
   }
 
@@ -146,7 +143,20 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         canvas.setRGB(i, j, newCanvas.getRGB(i, j));
       }
     }
+  }
 
+  /**
+   * @return the drawingAlgo
+   */
+  public DrawingAlgoStrategy getDrawingAlgo() {
+    return drawingAlgo;
+  }
+
+  /**
+   * @param drawingAlgo the drawingAlgo to set
+   */
+  public void setDrawingAlgo(DrawingAlgoStrategy drawingAlgo) {
+    this.drawingAlgo = drawingAlgo;
   }
 
 }

@@ -1,17 +1,21 @@
 package osu.java.graphics;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import osu.java.graphics.util.DrawUtil;
+import osu.java.graphics.algorithms.Bresenham;
+import osu.java.graphics.algorithms.DigitalDifferentialAnalyzer;
+
 
 @SuppressWarnings("serial")
 public class CasualDrawFrame extends JFrame {
 
+  private ImagePanel imagePannel;
+  
   public CasualDrawFrame() {
     initUI();
   }
@@ -27,22 +31,23 @@ public class CasualDrawFrame extends JFrame {
     mainVerticalPanel.add(mainPanel);
     mainPanel.add(Box.createRigidArea(new Dimension(30, 0)));
 
-    JRadioButton standartButton = new JRadioButton("Standart algo");
-    standartButton.setActionCommand("standart");
-    standartButton.setSelected(true);
-
-    JRadioButton brezButton = new JRadioButton("Brezenhem algo");
-    brezButton.setActionCommand("brezenhem");
+    JRadioButton ddaButton = new JRadioButton("DDA-line");
+    ddaButton.setActionCommand("DDA");
+    ddaButton.setSelected(true);
+    JRadioButton bresenhamButton = new JRadioButton("Bresenham's line");
+    bresenhamButton.setActionCommand("Bresenham");
 
     ButtonGroup drawLinesAlgosGroup = new ButtonGroup();
-    drawLinesAlgosGroup.add(standartButton);
-    drawLinesAlgosGroup.add(brezButton);
-
-    JButton ok = new JButton("OK");
+    drawLinesAlgosGroup.add(ddaButton);
+    drawLinesAlgosGroup.add(bresenhamButton);
+    
     JButton close = new JButton("Close");
-    ImagePanel ip = new ImagePanel();
+    imagePannel= new ImagePanel();
 
-    mainPanel.add(ip);
+    ddaButton.addActionListener(new ChoiceAlgorithmListner());
+    bresenhamButton.addActionListener(new ChoiceAlgorithmListner());
+    
+    mainPanel.add(imagePannel);
     mainPanel.add(Box.createRigidArea(new Dimension(30, 0)));
     JPanel rightPanel = new JPanel();
     rightPanel.setAlignmentY(-1f);
@@ -50,12 +55,11 @@ public class CasualDrawFrame extends JFrame {
 
     JPanel radioPanel = new JPanel();
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
-    radioPanel.add(standartButton);
-    radioPanel.add(brezButton);
-    radioPanel.setBorder(BorderFactory.createTitledBorder("Line algos"));
+    radioPanel.add(ddaButton);
+    radioPanel.add(bresenhamButton);
+    radioPanel.setBorder(BorderFactory.createTitledBorder("Drawing line algorithms"));
 
     rightPanel.add(radioPanel, BorderLayout.LINE_START);
-    rightPanel.add(ok);
     rightPanel.add(close);
     mainPanel.add(rightPanel);
 
@@ -63,15 +67,18 @@ public class CasualDrawFrame extends JFrame {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setSize(800, 600);
     setLocationRelativeTo(null);
-    drow(ip);
   }
 
-  private void drow(ImagePanel ip) {
-    
-  }
+  private class ChoiceAlgorithmListner implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("DDA")){
+          imagePannel.setDrawingAlgo(new DigitalDifferentialAnalyzer());
+        }else if (e.getActionCommand().equals("Bresenham")){
+          imagePannel.setDrawingAlgo(new Bresenham());
+        }
+    }
+}
 
-  public void actionPerformed(ActionEvent e) {
-
-  }
 
 }
