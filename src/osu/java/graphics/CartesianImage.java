@@ -14,7 +14,9 @@ public class CartesianImage extends BufferedImage {
   public CartesianImage(int width, int height, int imageType) {
     super(width, height, imageType);
   }
-
+/*
+ * Constructs a new BufferedImage with a specified ColorModel and Raster
+ */
   public CartesianImage(ColorModel cm, WritableRaster raster, boolean isRasterPremultiplied,
       Hashtable<?, ?> properties) {
     super(cm, raster, isRasterPremultiplied, properties);
@@ -35,7 +37,7 @@ public class CartesianImage extends BufferedImage {
     CartesianImage b = new CartesianImage(getWidth(), getHeight(), getType());
     Graphics g = b.getGraphics();
     g.drawImage(this, 0, 0, null);
-    g.dispose();
+    g.dispose(); // Избавляется от этого графического контекста
     return b;
   }
 

@@ -53,7 +53,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
     getDrawingAlgo().drawObject(new Point(0, 220), new Point(-10, 200), canvas, Color.BLACK);
     repaint();
   }
- //�������
+ //�������
   private void fillCanvas(Color c) {
     int color = c.getRGB();
     for (int x = -250; x <= 250; x++) {
@@ -61,7 +61,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         canvas.setRGB(x, y, color);
       }
     }
-    repaint();
+    repaint(); // Для программной инициализации перерисовки компонента 
 
   }
 

@@ -44,7 +44,7 @@ public class CasualDrawFrame extends JFrame {
     drawLinesAlgosGroup.add(bresenhamButton);
 
     JButton closeButton = new JButton("Close");
-    closeButton.setMnemonic(KeyEvent.VK_ESCAPE);
+    closeButton.setMnemonic(KeyEvent.VK_ESCAPE); // установить горячую клавишу-setMnemonic
     closeButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent event) {
@@ -68,14 +68,14 @@ public class CasualDrawFrame extends JFrame {
     mainPanel.add(imagePannel);
 
     JPanel rightPanel = new JPanel();
-    rightPanel.setAlignmentY(-1f);
-    rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+    rightPanel.setAlignmentY(-1f);// выравнивание по вертикали
+    rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS)); // BoxLayout располагает компоненты (по вертикали)
 
     JPanel radioPanel = new JPanel();
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
     radioPanel.add(ddaButton);
     radioPanel.add(bresenhamButton);
-    radioPanel.setBorder(BorderFactory.createTitledBorder("Drawing line algorithms"));
+    radioPanel.setBorder(BorderFactory.createTitledBorder("Drawing line algorithms")); // устанавливаем границу
 
     rightPanel.add(radioPanel, BorderLayout.LINE_START);
     rightPanel.add(clearButton);

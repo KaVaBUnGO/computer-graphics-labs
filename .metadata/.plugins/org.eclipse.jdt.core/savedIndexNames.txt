@@ -1,0 +1,2 @@
+INDEX VERSION 1.126+D:\forKate\programming\git__repos\computer_graphics_labs\.metadata\.plugins\org.eclipse.jdt.core
+2755687741.index
