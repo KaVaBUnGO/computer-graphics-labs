@@ -87,7 +87,7 @@ public class CasualDrawFrame extends JFrame {
     rightPanel.add(radioPanel, BorderLayout.LINE_START);
     rightPanel.add(clearButton);
     rightPanel.add(closeButton);
-    rightPanel.add(bresCircleButton);
+   // rightPanel.add(bresCircleButton);
     rightPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
     mainPanel.add(rightPanel);
 

@@ -25,15 +25,15 @@ public class BresenhamCircle implements DrawingAlgoStrategy {
 		System.out.println(r);
 
 		while (y > 0) {
-			image.setRGB(x, y, color.getRGB());
-			image.setRGB(x, -y, color.getRGB());
-			image.setRGB(-x, y, color.getRGB());
-			image.setRGB(-x, -y, color.getRGB());
+			image.setRGB(x+x1, y+y1, color.getRGB());
+			image.setRGB(x+x1, -y+y1, color.getRGB());
+			image.setRGB(-x+x1, y+y1, color.getRGB());
+			image.setRGB(-x+x1, -y+y1, color.getRGB());
 			if (d < 0) {
 				d1 = 2 * d + 2 * y - 1;
 				if (d1 <= 0) {
-					x = x + 1;
-					d = d + 2 * x + 1;
+					x++;
+					d += 2 * x + 1;
 				} else {
 					x++;
 					y--;
