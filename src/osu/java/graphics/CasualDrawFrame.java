@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.*;
 
 import osu.java.graphics.algorithms.Bresenham;
+import osu.java.graphics.algorithms.BresenhamArc;
 import osu.java.graphics.algorithms.BresenhamCircle;
 import osu.java.graphics.algorithms.DigitalDifferentialAnalyzer;
 import osu.java.graphics.customUI.StatusBar;
@@ -18,6 +19,8 @@ public class CasualDrawFrame extends JFrame {
 
   private ImagePanel imagePannel;
   private StatusBar statusBar;
+  private JRadioButton ddaButton = new JRadioButton("DDA-line");
+
 
   public CasualDrawFrame() {
     initUI();
@@ -33,23 +36,24 @@ public class CasualDrawFrame extends JFrame {
     mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
     // mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     mainVerticalPanel.add(mainPanel);
-    //mainVerticalPanel.setBorder(BorderFactory.createEmptyBorder());
-    JRadioButton ddaButton = new JRadioButton("DDA-line");
+    // mainVerticalPanel.setBorder(BorderFactory.createEmptyBorder());
     ddaButton.setActionCommand("DDA");
     ddaButton.setSelected(true);
     JRadioButton bresenhamButton = new JRadioButton("Bresenham's line");
     bresenhamButton.setActionCommand("Bresenham");
     JRadioButton bresCircleButton = new JRadioButton("Bresenham's circle");
     bresCircleButton.setActionCommand("BresenhamCircle");
-
+    JRadioButton bresArcButton = new JRadioButton("Bresenham's arc");
+    bresArcButton.setActionCommand("BresenhamArc");
     ButtonGroup drawLinesAlgosGroup = new ButtonGroup();
     drawLinesAlgosGroup.add(ddaButton);
     drawLinesAlgosGroup.add(bresenhamButton);
     drawLinesAlgosGroup.add(bresCircleButton);
-    
+    drawLinesAlgosGroup.add(bresArcButton);
+
 
     JButton closeButton = new JButton("Close");
-    closeButton.setMnemonic(KeyEvent.VK_ESCAPE); 
+    closeButton.setMnemonic(KeyEvent.VK_ESCAPE);
     closeButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent event) {
@@ -62,6 +66,8 @@ public class CasualDrawFrame extends JFrame {
     clearButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent event) {
+        ddaButton.setSelected(true);
+        imagePannel.setDrawingAlgo(new DigitalDifferentialAnalyzer());
         imagePannel.clearCanvas();
       }
     });
@@ -70,24 +76,24 @@ public class CasualDrawFrame extends JFrame {
     ddaButton.addActionListener(new ChoiceAlgorithmListner());
     bresenhamButton.addActionListener(new ChoiceAlgorithmListner());
     bresCircleButton.addActionListener(new ChoiceAlgorithmListner());
-
+    bresArcButton.addActionListener(new ChoiceAlgorithmListner());
     mainPanel.add(imagePannel);
 
     JPanel rightPanel = new JPanel();
     rightPanel.setAlignmentY(-1f);
-    rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS)); 
+    rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 
     JPanel radioPanel = new JPanel();
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
     radioPanel.add(ddaButton);
     radioPanel.add(bresenhamButton);
     radioPanel.add(bresCircleButton);
-    radioPanel.setBorder(BorderFactory.createTitledBorder("Drawing line algorithms")); 
+    radioPanel.add(bresArcButton);
+    radioPanel.setBorder(BorderFactory.createTitledBorder("Drawing line algorithms"));
 
     rightPanel.add(radioPanel, BorderLayout.LINE_START);
     rightPanel.add(clearButton);
     rightPanel.add(closeButton);
-   // rightPanel.add(bresCircleButton);
     rightPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
     mainPanel.add(rightPanel);
 
@@ -109,9 +115,12 @@ public class CasualDrawFrame extends JFrame {
         imagePannel.setDrawingAlgo(new DigitalDifferentialAnalyzer());
       } else if (e.getActionCommand().equals("Bresenham")) {
         imagePannel.setDrawingAlgo(new Bresenham());
-      } else if (e.getActionCommand().equals("BresenhamCircle")){
-    	  imagePannel.setDrawingAlgo(new BresenhamCircle());
+      } else if (e.getActionCommand().equals("BresenhamCircle")) {
+        imagePannel.setDrawingAlgo(new BresenhamCircle());
+      } else if (e.getActionCommand().equals("BresenhamArc")) {
+        imagePannel.setDrawingAlgo(new BresenhamArc());
       }
+      imagePannel.getCurrentPoints().clear();
     }
   }
 

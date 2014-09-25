@@ -2,6 +2,7 @@ package osu.java.graphics.algorithms;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.util.List;
 
 import osu.java.graphics.CartesianImage;
 import osu.java.graphics.util.DrawUtil;
@@ -14,7 +15,8 @@ public class DigitalDifferentialAnalyzer implements DrawingAlgoStrategy {
   }
   
   @Override
-  public void drawObject(Point p1, Point p2, CartesianImage canvas, Color color) {
+  public void drawObject(List<Point> points, CartesianImage canvas, Color color) {
+    Point p1 = points.get(0), p2 = points.get(1);
     DrawDDALine(p1.x, p1.y, p2.x, p2.y, canvas, color);
   }
 
@@ -29,5 +31,10 @@ public class DigitalDifferentialAnalyzer implements DrawingAlgoStrategy {
       x += dx;
       y += dy;
     }
+  }
+
+  @Override
+  public int getTotalPoints() {
+    return 2;
   }
 }

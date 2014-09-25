@@ -2,6 +2,7 @@ package osu.java.graphics.algorithms;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.util.List;
 
 import osu.java.graphics.CartesianImage;
 import static java.lang.Math.*;
@@ -12,14 +13,14 @@ public class BresenhamCircle implements DrawingAlgoStrategy {
   }
 
   @Override
-  public void drawObject(Point p1, Point p2, CartesianImage canvas, Color color) {
+  public void drawObject(List<Point> points, CartesianImage canvas, Color color) {
+    Point p1 = points.get(0), p2 = points.get(1);
     int r = (int) sqrt(pow((p1.x - p2.x), 2) + pow((p1.y - p2.y), 2));
     DrawBresCircle(p1.x, p1.y, r, canvas, color);
   }
 
   public void DrawBresCircle(int x1, int y1, int r, CartesianImage image, Color color) {
     int x = 0, y = r, d = 2 * (1 - r), d1 = 0, d2 = 0;
-    System.out.println(r);
     double limit = 0;
     int vector[] = {-1, 1};
 
@@ -63,5 +64,10 @@ public class BresenhamCircle implements DrawingAlgoStrategy {
   private boolean validateAxis(int x, int y, CartesianImage image) {
     return ((x >= image.getWidth() / 2) || (x <= -image.getWidth() / 2)
         || (y >= image.getHeight() / 2) || (y <= -image.getWidth() / 2)) ? false : true;
+  }
+
+  @Override
+  public int getTotalPoints() {
+    return 2;
   }
 }
