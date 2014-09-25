@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import osu.java.graphics.algorithms.Bresenham;
 import osu.java.graphics.algorithms.DigitalDifferentialAnalyzer;
 import osu.java.graphics.algorithms.DrawingAlgoStrategy;
 import osu.java.graphics.customUI.StatusBar;
@@ -25,21 +26,20 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
   private Point p = null;
   private DrawingAlgoStrategy drawingAlgo;
   private StatusBar statusBar;
-  
+
   public ImagePanel() {
-    canvas =
-        new CartesianImage(501, 501, CartesianImage.TYPE_INT_ARGB);
+    canvas = new CartesianImage(501, 501, CartesianImage.TYPE_INT_ARGB);
     setDrawingAlgo(new DigitalDifferentialAnalyzer());
     clearCanvas();
     addMouseListener(this);
     addMouseMotionListener(this);
   }
 
-  public void clearCanvas(){
+  public void clearCanvas() {
     fillCanvas(Color.WHITE);
     drawCartesianCoordinateSystem();
   }
-  
+
   private void drawCartesianCoordinateSystem() {
     for (int x = -220; x <= 220; x++) {
       canvas.setRGB(x, 0, Color.BLACK.getRGB());
@@ -47,13 +47,16 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
     for (int y = -220; y <= 220; y++) {
       canvas.setRGB(0, y, Color.BLACK.getRGB());
     }
+    DrawingAlgoStrategy tempDrowAlgo = getDrawingAlgo();
+    setDrawingAlgo(new Bresenham());
     getDrawingAlgo().drawObject(new Point(220, 0), new Point(200, 10), canvas, Color.BLACK);
     getDrawingAlgo().drawObject(new Point(220, 0), new Point(200, -10), canvas, Color.BLACK);
     getDrawingAlgo().drawObject(new Point(0, 220), new Point(10, 200), canvas, Color.BLACK);
     getDrawingAlgo().drawObject(new Point(0, 220), new Point(-10, 200), canvas, Color.BLACK);
+    setDrawingAlgo(tempDrowAlgo);
     repaint();
   }
- //�������
+
   private void fillCanvas(Color c) {
     int color = c.getRGB();
     for (int x = -250; x <= 250; x++) {
@@ -61,7 +64,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         canvas.setRGB(x, y, color);
       }
     }
-    repaint(); // Для программной инициализации перерисовки компонента 
+    repaint(); // Для программной инициализации перерисовки компонента
 
   }
 
@@ -94,8 +97,8 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
     if (p == null) {
       lastImages.add(canvas.copy());
       p = e.getPoint();
-      getStatusBar().setText("First point: ("+e.getX()+" ,"+e.getY()+")");
-      
+      getStatusBar().setText("First point: (" + e.getX() + " ," + e.getY() + ")");
+
     } else {
       paintCanvas(lastImages.peek());
       getDrawingAlgo().drawObject(p, e.getPoint(), canvas, Color.BLUE);
@@ -103,8 +106,6 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
       lastImages.poll();
     }
   }
-
-
 
   @Override
   public void mouseEntered(MouseEvent e) {
@@ -142,7 +143,9 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         paintCanvas(lastImages.peek());
       }
       getDrawingAlgo().drawObject(p, e.getPoint(), canvas, Color.RED);
-      getStatusBar().setText("First point: ("+p.x+" ,"+p.y+");"+" Second point: ("+e.getX()+" ,"+e.getY()+");");
+      getStatusBar().setText(
+          "First point: (" + p.x + " ," + p.y + ");" + " Second point: (" + e.getX() + " ,"
+              + e.getY() + ");");
     }
   }
 

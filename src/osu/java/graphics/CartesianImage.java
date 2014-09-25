@@ -14,9 +14,10 @@ public class CartesianImage extends BufferedImage {
   public CartesianImage(int width, int height, int imageType) {
     super(width, height, imageType);
   }
-/*
- * Constructs a new BufferedImage with a specified ColorModel and Raster
- */
+
+  /*
+   * Constructs a new BufferedImage with a specified ColorModel and Raster
+   */
   public CartesianImage(ColorModel cm, WritableRaster raster, boolean isRasterPremultiplied,
       Hashtable<?, ?> properties) {
     super(cm, raster, isRasterPremultiplied, properties);
