@@ -25,10 +25,16 @@ public class FillPolygonLineByLine implements DrawingAlgoStrategy {
     int tempX = 0, xRight = 0, xLeft = 0, xIn = 0;
     boolean flag = false;
     st.push(p);
+    // запихиваем координаты точки в стек
     while (!st.empty()) {
+      // извлекаем координаты из стека
       pixel = st.pop();
-      image.setRGB(pixel.x, pixel.y, fillColor);
+      // если извлеченная точка еще не закрашена - закрашиваем
+      if (image.getRGB(pixel.x, pixel.y) != fillColor) {
+        image.setRGB(pixel.x, pixel.y, fillColor);
+      }
       tempX = pixel.x;
+      // закрашиваем все точки справа от текущей
       pixel.x++;
       while (image.getRGB(pixel.x, pixel.y) != borderColor) {
         image.setRGB(pixel.x, pixel.y, fillColor);
@@ -36,6 +42,7 @@ public class FillPolygonLineByLine implements DrawingAlgoStrategy {
       }
       xRight = pixel.x - 1;
       pixel.x = tempX;
+      // закрашиваем все точки слева от текущей
       pixel.x--;
       while (image.getRGB(pixel.x, pixel.y) != borderColor) {
         image.setRGB(pixel.x, pixel.y, fillColor);
@@ -45,14 +52,16 @@ public class FillPolygonLineByLine implements DrawingAlgoStrategy {
       // Ищем затравку на строке выше
       pixel.x = xLeft;
       pixel.y++;
+
       while (pixel.x <= xRight) {
         flag = false;
         while (image.getRGB(pixel.x, pixel.y) != fillColor
             && image.getRGB(pixel.x, pixel.y) != borderColor && pixel.x < xRight) {
-          if (flag = false)
+          if (!flag)
             flag = true;
           pixel.x++;
         }
+
         if (flag) {
           if (pixel.x == xRight && image.getRGB(pixel.x, pixel.y) != fillColor
               && image.getRGB(pixel.x, pixel.y) != borderColor)
@@ -68,16 +77,18 @@ public class FillPolygonLineByLine implements DrawingAlgoStrategy {
         if (pixel.x == xIn)
           pixel.x++;
       }
+
       pixel.x = xLeft;
       pixel.y -= 2;
       while (pixel.x <= xRight) {
         flag = false;
         while (image.getRGB(pixel.x, pixel.y) != fillColor
             && image.getRGB(pixel.x, pixel.y) != borderColor && pixel.x < xRight) {
-          if (flag = false)
+          if (!flag)
             flag = true;
           pixel.x++;
         }
+
         if (flag) {
           if (pixel.x == xRight && image.getRGB(pixel.x, pixel.y) != fillColor
               && image.getRGB(pixel.x, pixel.y) != borderColor)
