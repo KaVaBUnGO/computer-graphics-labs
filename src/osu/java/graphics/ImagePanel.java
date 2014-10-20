@@ -59,7 +59,17 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         canvas, Color.BLACK);
     getDrawingAlgo().drawObject(DrawUtil.getPointList(new Point(0, 220), new Point(-10, 200)),
         canvas, Color.BLACK);
+
+    getDrawingAlgo().drawObject(DrawUtil.getPointList(new Point(-250, -250), new Point(-250, 250)),
+        canvas, Color.BLUE);
+    getDrawingAlgo().drawObject(DrawUtil.getPointList(new Point(-250, -250), new Point(250, -250)),
+        canvas, Color.BLUE);
+    getDrawingAlgo().drawObject(DrawUtil.getPointList(new Point(250, 250), new Point(250, -250)),
+        canvas, Color.BLUE);
+    getDrawingAlgo().drawObject(DrawUtil.getPointList(new Point(250, 250), new Point(-250, 250)),
+        canvas, Color.BLUE);
     repaint();
+
   }
 
   private void fillCanvas(Color c) {
@@ -104,11 +114,14 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
       if (lastImages.size() == 0)
         lastImages.add(canvas.copy());
       statusBar.setText("");
-      for(int i=0; i<currentPoints.size(); i++){
-        getStatusBar().setText(statusBar.getText()+numbers[i]+" point: (" + currentPoints.get(i).x + " ," + currentPoints.get(i).y + "); ");
+      for (int i = 0; i < currentPoints.size(); i++) {
+        getStatusBar().setText(
+            statusBar.getText() + numbers[i] + " point: (" + currentPoints.get(i).x + " ,"
+                + currentPoints.get(i).y + "); ");
       }
     } else {
-      paintCanvas(lastImages.peek());
+      if (lastImages.size() > 0)
+        paintCanvas(lastImages.peek());
       getDrawingAlgo().drawObject(currentPoints, canvas, Color.BLUE);
       currentPoints.clear();
       lastImages.poll();
@@ -145,6 +158,8 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 
   @Override
   public void mouseMoved(MouseEvent e) {
+    if (getDrawingAlgo().getTotalPoints() == 1)
+      return;
     e.translatePoint(-250, -250 - 2 * (e.getY() - 250));
     if (currentPoints.size() == getDrawingAlgo().getTotalPoints() - 1) {
       if (lastImages.size() > 0) {
@@ -153,8 +168,10 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
       currentPoints.add(e.getPoint());
       getDrawingAlgo().drawObject(currentPoints, canvas, Color.RED);
       statusBar.setText("");
-      for(int i=0; i<currentPoints.size(); i++){
-        getStatusBar().setText(statusBar.getText()+numbers[i]+" point: (" + currentPoints.get(i).x + " ," + currentPoints.get(i).y + "); ");
+      for (int i = 0; i < currentPoints.size(); i++) {
+        getStatusBar().setText(
+            statusBar.getText() + numbers[i] + " point: (" + currentPoints.get(i).x + " ,"
+                + currentPoints.get(i).y + "); ");
       }
       currentPoints.remove(currentPoints.size() - 1);
     }

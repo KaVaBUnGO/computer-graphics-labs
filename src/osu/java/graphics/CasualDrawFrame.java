@@ -11,6 +11,8 @@ import osu.java.graphics.algorithms.Bresenham;
 import osu.java.graphics.algorithms.BresenhamArc;
 import osu.java.graphics.algorithms.BresenhamCircle;
 import osu.java.graphics.algorithms.DigitalDifferentialAnalyzer;
+import osu.java.graphics.algorithms.FillPolygon;
+import osu.java.graphics.algorithms.FillPolygonLineByLine;
 import osu.java.graphics.customUI.StatusBar;
 
 
@@ -45,11 +47,17 @@ public class CasualDrawFrame extends JFrame {
     bresCircleButton.setActionCommand("BresenhamCircle");
     JRadioButton bresArcButton = new JRadioButton("Bresenham's arc");
     bresArcButton.setActionCommand("BresenhamArc");
+    JRadioButton fillSeededButton = new JRadioButton("Fill polygon");
+    fillSeededButton.setActionCommand("FillPolygon");
+    JRadioButton fillSeededLineButton = new JRadioButton("Fill polygon line algo");
+    fillSeededLineButton.setActionCommand("FillPolygonLine");
     ButtonGroup drawLinesAlgosGroup = new ButtonGroup();
     drawLinesAlgosGroup.add(ddaButton);
     drawLinesAlgosGroup.add(bresenhamButton);
     drawLinesAlgosGroup.add(bresCircleButton);
     drawLinesAlgosGroup.add(bresArcButton);
+    drawLinesAlgosGroup.add(fillSeededButton);
+    drawLinesAlgosGroup.add(fillSeededLineButton);
 
 
     JButton closeButton = new JButton("Close");
@@ -77,6 +85,8 @@ public class CasualDrawFrame extends JFrame {
     bresenhamButton.addActionListener(new ChoiceAlgorithmListner());
     bresCircleButton.addActionListener(new ChoiceAlgorithmListner());
     bresArcButton.addActionListener(new ChoiceAlgorithmListner());
+    fillSeededButton.addActionListener(new ChoiceAlgorithmListner());
+    fillSeededLineButton.addActionListener(new ChoiceAlgorithmListner());
     mainPanel.add(imagePannel);
 
     JPanel rightPanel = new JPanel();
@@ -89,6 +99,8 @@ public class CasualDrawFrame extends JFrame {
     radioPanel.add(bresenhamButton);
     radioPanel.add(bresCircleButton);
     radioPanel.add(bresArcButton);
+    radioPanel.add(fillSeededButton);
+    radioPanel.add(fillSeededLineButton);
     radioPanel.setBorder(BorderFactory.createTitledBorder("Drawing line algorithms"));
 
     rightPanel.add(radioPanel, BorderLayout.LINE_START);
@@ -119,6 +131,10 @@ public class CasualDrawFrame extends JFrame {
         imagePannel.setDrawingAlgo(new BresenhamCircle());
       } else if (e.getActionCommand().equals("BresenhamArc")) {
         imagePannel.setDrawingAlgo(new BresenhamArc());
+      } else if (e.getActionCommand().equals("FillPolygon")) {
+        imagePannel.setDrawingAlgo(new FillPolygon());
+      } else if (e.getActionCommand().equals("FillPolygonLine")) {
+        imagePannel.setDrawingAlgo(new FillPolygonLineByLine());
       }
       imagePannel.getCurrentPoints().clear();
     }
