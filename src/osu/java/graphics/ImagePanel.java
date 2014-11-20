@@ -28,7 +28,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
   private DrawingAlgoStrategy drawingAlgo;
   private StatusBar statusBar;
   private List<Point> currentPoints = new ArrayList<Point>();
-  private String[] numbers = {"First", "Second", "Third"};
+  private String[] numbers = {"First", "Second", "Third", "Fourth"};
 
   public ImagePanel() {
     canvas = new CartesianImage(501, 501, CartesianImage.TYPE_INT_ARGB);
@@ -174,7 +174,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
                 + currentPoints.get(i).y + "); ");
       }
       currentPoints.remove(currentPoints.size() - 1);
-    }
+    } 
   }
 
   private void paintCanvas(CartesianImage newCanvas) {

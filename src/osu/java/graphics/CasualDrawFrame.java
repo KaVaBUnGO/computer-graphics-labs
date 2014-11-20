@@ -13,6 +13,7 @@ import osu.java.graphics.algorithms.BresenhamCircle;
 import osu.java.graphics.algorithms.DigitalDifferentialAnalyzer;
 import osu.java.graphics.algorithms.FillPolygon;
 import osu.java.graphics.algorithms.FillPolygonLineByLine;
+import osu.java.graphics.algorithms.LineClipping;
 import osu.java.graphics.customUI.StatusBar;
 
 
@@ -51,6 +52,8 @@ public class CasualDrawFrame extends JFrame {
     fillSeededButton.setActionCommand("FillPolygon");
     JRadioButton fillSeededLineButton = new JRadioButton("Fill polygon line algo");
     fillSeededLineButton.setActionCommand("FillPolygonLine");
+    JRadioButton lineClippingButton = new JRadioButton("Line Clipping button");
+    lineClippingButton.setActionCommand("LineClipping");
     ButtonGroup drawLinesAlgosGroup = new ButtonGroup();
     drawLinesAlgosGroup.add(ddaButton);
     drawLinesAlgosGroup.add(bresenhamButton);
@@ -58,6 +61,7 @@ public class CasualDrawFrame extends JFrame {
     drawLinesAlgosGroup.add(bresArcButton);
     drawLinesAlgosGroup.add(fillSeededButton);
     drawLinesAlgosGroup.add(fillSeededLineButton);
+    drawLinesAlgosGroup.add(lineClippingButton);
 
 
     JButton closeButton = new JButton("Close");
@@ -87,6 +91,7 @@ public class CasualDrawFrame extends JFrame {
     bresArcButton.addActionListener(new ChoiceAlgorithmListner());
     fillSeededButton.addActionListener(new ChoiceAlgorithmListner());
     fillSeededLineButton.addActionListener(new ChoiceAlgorithmListner());
+    lineClippingButton.addActionListener(new ChoiceAlgorithmListner());
     mainPanel.add(imagePannel);
 
     JPanel rightPanel = new JPanel();
@@ -101,6 +106,7 @@ public class CasualDrawFrame extends JFrame {
     radioPanel.add(bresArcButton);
     radioPanel.add(fillSeededButton);
     radioPanel.add(fillSeededLineButton);
+    radioPanel.add(lineClippingButton);
     radioPanel.setBorder(BorderFactory.createTitledBorder("Drawing line algorithms"));
 
     rightPanel.add(radioPanel, BorderLayout.LINE_START);
@@ -135,6 +141,8 @@ public class CasualDrawFrame extends JFrame {
         imagePannel.setDrawingAlgo(new FillPolygon());
       } else if (e.getActionCommand().equals("FillPolygonLine")) {
         imagePannel.setDrawingAlgo(new FillPolygonLineByLine());
+      } else if (e.getActionCommand().equals("LineClipping")){
+        imagePannel.setDrawingAlgo(new LineClipping());
       }
       imagePannel.getCurrentPoints().clear();
     }
